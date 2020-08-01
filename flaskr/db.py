@@ -7,7 +7,7 @@ from flask import current_app
 from flask import g
 from flask.cli import with_appcontext
 
-DATABASE = 'postgresql://localhost/project'
+DATABASE = os.environ['DATABASE_URL'] 
 def get_db():
     """Connect to the application's configured database. The connection
     is unique for each request and will be reused if this is called

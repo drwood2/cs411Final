@@ -9,10 +9,10 @@ from flask_heroku import Heroku
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/project'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+DATABASE_URL = os.environ['DATABASE_URL']
+DATABASE = os.environ['DATABASE_URL']
     #DATABASE_URL = os.environ['DATABASE_URL']
     #heroku = Heroku(app)
 
