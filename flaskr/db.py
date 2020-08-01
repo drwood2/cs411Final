@@ -6,6 +6,7 @@ import click
 from flask import current_app
 from flask import g
 from flask.cli import with_appcontext
+import os
 
 DATABASE = os.environ['DATABASE_URL'] 
 def get_db():
