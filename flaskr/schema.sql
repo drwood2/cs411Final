@@ -54,3 +54,10 @@ CREATE TABLE Times (
   locationCapacity INTEGER NOT NULL,
   FOREIGN KEY (locationId) REFERENCES Locations (locationId)
 );
+
+CREATE TABLE Permissions (
+  id SERIAL PRIMARY KEY,
+  orgId INTEGER NOT NULL,
+  p1NumReq INTEGER NOT NULL,
+  p2NumReq INTEGER NOT NULL
+);
