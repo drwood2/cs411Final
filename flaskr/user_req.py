@@ -80,6 +80,32 @@ def create():
 
     return render_template("user_req/create.html")
 
+@bp.route("/schedule", methods=("GET", "POST"))
+@login_required
+def schedule():
+    if request.method == "POST":
+        error = None
+        
+        if error is not None:
+            flash(error)
+        else:
+            return redirect(url_for("user_req.index"))
+
+    return render_template("user_req/schedule.html")
+
+
+
+@bp.route("/FinalSchedule", methods=("GET", "POST"))
+@login_required
+def FinalSchedule():
+    db = get_db()
+    cur = db.cursor()
+
+    cur.execute("SELECT r.id, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.priority, r.capacity, m.username FROM FinalSched r JOIN maker m ON r.maker_id = m.id ORDER BY created DESC;")
+
+    return render_template("user_req/FinalSchedule.html", reqs=cur.fetchall())
+
+
 
 @bp.route("/<int:id>/update", methods=("GET", "POST"))
 @login_required
