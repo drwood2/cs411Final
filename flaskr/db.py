@@ -8,7 +8,10 @@ from flask import g
 from flask.cli import with_appcontext
 import os
 
-DATABASE = os.environ['DATABASE_URL'] 
+try:
+    DATABASE = os.environ['DATABASE_URL'] 
+except Exception as e:
+    DATABASE = 'postgres://kkyceuncyvjkxe:b1b3ee8a9abc4efccab51570abf6888e48ff80d6570781338d6bdc1d8999cc57@ec2-52-202-66-191.compute-1.amazonaws.com:5432/dccmmcosuglg9u'
 def get_db():
     """Connect to the application's configured database. The connection
     is unique for each request and will be reused if this is called

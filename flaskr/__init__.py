@@ -9,10 +9,26 @@ from flask_heroku import Heroku
 def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    DATABASE_URL = os.environ['DATABASE_URL']
-    DATABASE = os.environ['DATABASE_URL']
+    #lets this work locally as well as remotely
+    #if this is deployed to Heroku os.environ will be populated already. If local it won't be
+    #if os.environ.get("DATABASE_URL") == None:
+    #    os.environ['DATABASE_URL']='postgres://kkyceuncyvjkxe:b1b3ee8a9abc4efccab51570abf6888e48ff80d6570781338d6bdc1d8999cc57@ec2-52-202-66-191.compute-1.amazonaws.com:5432/dccmmcosuglg9u'
+    try:
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        DATABASE_URL = os.environ['DATABASE_URL']
+        DATABASE = os.environ['DATABASE_URL']
+    except Exception as e:
+        print("Exception occured \n")
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://kkyceuncyvjkxe:b1b3ee8a9abc4efccab51570abf6888e48ff80d6570781338d6bdc1d8999cc57@ec2-52-202-66-191.compute-1.amazonaws.com:5432/dccmmcosuglg9u'
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        DATABASE_URL = 'postgres://kkyceuncyvjkxe:b1b3ee8a9abc4efccab51570abf6888e48ff80d6570781338d6bdc1d8999cc57@ec2-52-202-66-191.compute-1.amazonaws.com:5432/dccmmcosuglg9u'
+        DATABASE = 'postgres://kkyceuncyvjkxe:b1b3ee8a9abc4efccab51570abf6888e48ff80d6570781338d6bdc1d8999cc57@ec2-52-202-66-191.compute-1.amazonaws.com:5432/dccmmcosuglg9u'
+
+    #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    #DATABASE_URL = os.environ['DATABASE_URL']
+    #DATABASE = os.environ['DATABASE_URL']
     #DATABASE_URL = os.environ['DATABASE_URL']
     #heroku = Heroku(app)
 
