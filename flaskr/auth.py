@@ -28,6 +28,8 @@ def login_required(view):
 
     return wrapped_view
 
+def admin_required(view):
+   
 
 @bp.before_app_request
 def load_logged_in_user():

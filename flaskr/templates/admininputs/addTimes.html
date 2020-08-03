@@ -1,0 +1,19 @@
+{%extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Admin Required Information{% endblock %}</h1>
+  {% if g.maker %}
+     <a class="action" href="{{ url_for('admin.displayinfo') }}"> Admin Home</a>
+     <a class="action" href="{{ url_for('admin.addLocations') }}"> Add Locations</a>
+     <a class="action" href="{{ url_for('admin.addTimes') }}"> Add Available Times</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+       <label for="new_time">New Time Availability</label>
+       <input name="new_time" id="new_time" value="{{ request.form['new_time'] }}" required>
+
+       <input type="submit" value="submit request">
+    </form>
+{% endblock %}
