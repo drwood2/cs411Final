@@ -2,11 +2,9 @@
 
 {% block header %}
   <h1>{% block title %}user requests{% endblock %}</h1>
-  {% if g.maker %}
-    <a class="action" href="{{ url_for('user_req.index') }}"> home</a>
-    <a class="action" href="{{ url_for('user_req.create') }}"> make a new request</a>
-    <a class="action" href="{{ url_for('user_req.FinalSchedule') }}"> view final schedule</a>
-    <a class="action" href="{{ url_for('user_req.schedule') }}"> create the schedule</a>
+    <a class="action" href="{{ url_for('admin.index') }}"> home </a>
+    <a class="action" href="{{ url_for('admin.FinalSchedule') }}"> view final schedule</a>
+    <a class="action" href="{{ url_for('admin.schedule') }}"> create the schedule</a>
   {% endif %}
 {% endblock %}
 
@@ -17,7 +15,7 @@
       <div class="about"> <h1> someone </h1> made a priority {{ req[7] }} request
       </div>
         {% if g.maker[0] == req[1] %}
-          <a class="action" href="{{ url_for('user_req.update', id=req[0])}}">edit</a>
+          <a class="action" href="{{ url_for('admin.update', id=req[0])}}">edit</a>
        {% endif %}
       </header>
       <p class="body">date: {{ req[3] }}</p>

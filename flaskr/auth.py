@@ -29,12 +29,22 @@ def login_required(view):
     return wrapped_view
 
 def admin_required(view):
-   
+
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if not g.isAdmin:
+            print("admin access required")
+            return redirect(url_for("auth.login"))
+
+        return view(**kwargs)
+
+    return wrapped_view
 
 @bp.before_app_request
 def load_logged_in_user():
     """If a maker id is stored in the session, load the maker object from
     the database into ``g.user``."""
+
     maker_id = session.get("maker_id")
     db = get_db()
     cur = db.cursor()
@@ -47,6 +57,7 @@ def load_logged_in_user():
         )
 
 
+
 @bp.route("/register", methods=("GET", "POST"))
 def register():
     """Register a new user.
@@ -56,6 +67,10 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        if request.form.get("isAdmin"):
+            isAdmin = True
+        else:
+            isAdmin = False
         db = get_db()
         cur = db.cursor()
         error = None
@@ -69,7 +84,7 @@ def register():
             # the name is available, store it in the database and go to
             # the login page
             db.cursor().execute(
-                "INSERT INTO maker (username, password) VALUES (%s, %s)", (username, generate_password_hash(password)),
+                "INSERT INTO maker (username, password, isAdmin) VALUES (%s, %s, %s)", (username, generate_password_hash(password), isAdmin),
             )
             db.commit()
             return redirect(url_for("auth.login"))
@@ -85,16 +100,24 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        admin_login = request.form.get("admin_login")
         db = get_db()
         cur = db.cursor()
         error = None
+
         cur.execute(
             "SELECT * FROM maker WHERE username = %s", (username,)
         )
         maker = cur.fetchone()
         if maker is None:
             error = "Incorrect username."
-        elif not check_password_hash(maker[2], password):
+        if admin_login:
+            cur.execute(
+                "SELECT * FROM maker WHERE username = %s AND isAdmin = TRUE", (username,)
+            )
+            if cur.fetchone() is None:
+                error = "You do not have admin access."
+        if not check_password_hash(maker[2], password):
             error = "Incorrect password."
 
         if error is None:

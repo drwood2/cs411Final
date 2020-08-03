@@ -1,14 +1,9 @@
-from flask import Blueprint
-from flask import flash
-from flask import g
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
+from flask import (Blueprint, flash, g, redirect, render_template, request, url_for)
+
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
-from flaskr.db import get_db
+from flaskr.db import (get_db, get_rows)
 
 bp = Blueprint("user_req", __name__)
 
@@ -16,10 +11,9 @@ bp = Blueprint("user_req", __name__)
 @bp.route("/")
 def index():
     """Show all the requests, most recent first."""
-    db = get_db()
-    cur = db.cursor()
 
-    cur.execute("SELECT r.id, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.priority, r.capacity, m.username FROM req r JOIN maker m ON r.maker_id = m.id ORDER BY created DESC;")
+
+    cur = get_rows("SELECT r.id, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.priority, r.capacity, m.username FROM req r JOIN maker m ON r.maker_id = m.id ORDER BY created DESC;")
 
     return render_template("user_req/index.html", reqs=cur.fetchall())
 
@@ -85,7 +79,7 @@ def create():
 def schedule():
     if request.method == "POST":
         error = None
-        
+
         if error is not None:
             flash(error)
         else:

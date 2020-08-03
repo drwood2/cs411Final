@@ -4,7 +4,7 @@
   <h1>{% block title %}user requests{% endblock %}</h1>
   {% if g.maker %}
     <a class="action" href="{{ url_for('user_req.index') }}"> home</a>
-    <a class="action" href="{{ url_for('user_req.FinalSchedule') }}"> FinalSchedule</a>
+    <a class="action" href="{{ url_for('user_req.FinalSchedule') }}"> view  schedule </a>
     <a class="action" href="{{ url_for('user_req.create') }}"> make a new request</a>
     <a class="action" href="{{ url_for('user_req.schedule') }}"> create the schedule</a>
   {% endif %}
