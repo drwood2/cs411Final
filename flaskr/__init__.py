@@ -3,7 +3,6 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_heroku import Heroku
-<<<<<<< HEAD
 from flask_admin import Admin
 
 
