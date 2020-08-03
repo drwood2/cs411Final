@@ -5,6 +5,8 @@ from werkzeug.exceptions import abort
 from flaskr.auth import login_required
 from flaskr.db import (get_db, get_rows)
 
+from .scheduler import runScheduler
+
 bp = Blueprint("user_req", __name__)
 
 
@@ -83,6 +85,8 @@ def schedule():
         if error is not None:
             flash(error)
         else:
+            if(runScheduler() == 0):
+                print("schedule works!")
             return redirect(url_for("user_req.index"))
 
     return render_template("user_req/schedule.html")
