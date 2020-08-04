@@ -63,7 +63,7 @@ def init_db():
 
     cur.execute("CREATE TABLE Locations(locationId SERIAL PRIMARY KEY, locationName TEXT NOT NULL, locationCapacity INTEGER NOT NULL);")
 
-    cur.execute("CREATE TABLE Times(id SERIAL PRIMARY KEY, locationId INTEGER NOT NULL, locationName TEXT NOT NULL, locationCapacity INTEGER NOT NULL, FOREIGN KEY (locationId) REFERENCES Locations (locationId));")
+    cur.execute("CREATE TABLE Times(timeId SERIAL PRIMARY KEY, timeAvailability TEXT NOT NULL);")
 
     cur.execute("CREATE TABLE Perms (id SERIAL PRIMARY KEY, isAdmin BOOLEAN NOT NULL DEFAULT FALSE, p1NumReq INTEGER NOT NULL, p2NumReq INTEGER NOT NULL);")
 

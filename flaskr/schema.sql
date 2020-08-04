@@ -46,11 +46,8 @@ CREATE TABLE Locations (
 );
 
 CREATE TABLE Times (
- id SERIAL PRIMARY KEY,
- locationId INTEGER NOT NULL,
- locationName TEXT NOT NULL,
- locationCapacity INTEGER NOT NULL,
- FOREIGN KEY (locationId) REFERENCES Locations (locationId)
+ timeId SERIAL PRIMARY KEY,
+ timeAvailability TEXT NOT NULL,
 );
 
 CREATE TABLE Perms (

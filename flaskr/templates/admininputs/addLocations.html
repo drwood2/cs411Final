@@ -13,7 +13,7 @@
     <form method="post">
        <label for="new_location">New Location</label>
        <input name="new_location" id="new_location" value="{{ request.form['new_location'] }}" required>
-
+       <input name="new_location_capacity" id="new_location_capacity" value="{{ request.form['new_location_capacity']}}" required>
        <input type="submit" value="submit request">
     </form>
 {% endblock %}

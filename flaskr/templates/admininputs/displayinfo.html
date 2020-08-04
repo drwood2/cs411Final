@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Admin Required Information{% endblock %}</h1>
+    <a class="action" href="{{ url_for('admin.displayinfo') }}"> Admin Home</a>
+    <a class="action" href="{{ url_for('admin.addLocations') }}"> Add Locations</a>
+    <a class="action" href="{{ url_for('admin.addTimes') }}"> Add Available Times</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for req in reqs %}
+    <article class="req">
+      <header>
+      <div class="about"> <h1> All Locations and Times </h1> {{ req[1] }} has the option of being booked at {{ req[3] }}
+      </div>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

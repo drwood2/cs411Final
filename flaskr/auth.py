@@ -124,7 +124,7 @@ def login():
             # store the maker id in a new session and return to the index
             session.clear()
             session["maker_id"] = maker[0]
-            return redirect(url_for("index"))
+            return redirect(url_for("admininputs.displayinfo"))
 
         flash(error)
 
