@@ -6,8 +6,8 @@
 {% block content %}
   {% for req in reqs %}
     <article class="req">
-      <header> 
-        <div class="about"> 
+      <header>
+        <div class="about">
         {% if g.maker[0] == req[2] %} <h1>  you have a slot </h1>
 
         {% endif %}
@@ -15,15 +15,15 @@
         {% if g.maker[0] != req[2] %} <h1> someone has a slot! :) </h1>
 
         {% endif %}
-      
+
       </div>
         {% if g.maker[0] == req[1] %}
           <a class="action" href="{{ url_for('user_req.update', id=req[0])}}">edit</a>
        {% endif %}
       </header>
-      <p class="body">date: {{ req[3] }}</p>
-      <p class="body">time: {{ req[4] }}</p>
-      <p class="body">location: {{ req[5] }}</p>
+      <p class="body">date: {{ req[4] }}</p>
+      <p class="body">time: {{ req[5] }}</p>
+      <p class="body">location: {{ req[6] }}</p>
       <p class="body">people: {{ req[7] }} </p>
     </article>
     {% if not loop.last %}

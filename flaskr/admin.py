@@ -111,7 +111,7 @@ def runScheduler():
  maker_id INTEGER NOT NULL,
  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  req_date TEXT NOT NULL,
- username TEXT NOT NULL, 
+ username TEXT NOT NULL,
  capacity INTEGER NOT NULL,
  location TEXT NOT NULL,
  req_time TEXT NOT NULL,
@@ -129,9 +129,9 @@ def runScheduler():
             print(ex_id[0])
             for req in reqs:
                 print(req[1])
-                if req[1] == ex_id[0]: 
+                if req[1] == ex_id[0]:
                     print("req is time:" +str(req[4]) + "at date:"+str(req[3]))
-                    print("check conflicct at: " + str(req[4])+ str(req[5])+ str(req[3]))
+                    print("check conflict at: " + str(req[4])+ str(req[5])+ str(req[3]))
                     cur.execute("SELECT r.id,r.maker_id, r.created, r.req_date, r.req_time, r.location, r.capacity FROM schedule r WHERE r.req_time = %s AND r.location=%s AND r.req_date = %s;", (req[4],req[5],req[3]))
                     conflicts =cur.fetchall()
                     print("conflicts exist!!\n")
@@ -148,17 +148,17 @@ def runScheduler():
                         db.commit()
                         reqs.remove(req)
                         break
-                
+
                     else:
                         reqs.remove(req)
 
-                    
+
 
 
     for req in reqs:
         print(req)
         print(type(reqs))
 
-        
-    
+
+
     return 0
