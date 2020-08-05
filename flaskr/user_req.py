@@ -125,6 +125,6 @@ def final_schedule():
     cur = db.cursor()
     
 
-    cur.execute("SELECT r.id, r.username, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.capacity, m.username FROM schedule r JOIN maker m ON r.maker_id = m.id ORDER BY created DESC;")
+    cur.execute("SELECT r.id, r.username, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.capacity, m.username FROM schedule r JOIN maker m ON r.maker_id = m.id")
 
     return render_template("user_req/final_schedule.html", reqs=cur.fetchall())
