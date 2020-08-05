@@ -6,8 +6,16 @@
 {% block content %}
   {% for req in reqs %}
     <article class="req">
-      <header>
-      <div class="about"> <h1> someone has a slot! :) </h1>
+      <header> 
+        <div class="about"> 
+        {% if g.maker[0] == req[2] %} <h1>  you have a slot </h1>
+
+        {% endif %}
+
+        {% if g.maker[0] != req[2] %} <h1> someone has a slot! :) </h1>
+
+        {% endif %}
+      
       </div>
         {% if g.maker[0] == req[1] %}
           <a class="action" href="{{ url_for('user_req.update', id=req[0])}}">edit</a>
