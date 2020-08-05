@@ -95,4 +95,67 @@ def schedule():
                 print("schedule works!")
             return redirect(url_for("admin.home"))
 
-    return render_template("admin/schedule.html")
+    return render_template("admininputs/schedule.html")
+
+
+
+
+def runScheduler():
+    db = get_db()
+    ex_cur = db.cursor()
+    db = get_db()
+    cur = db.cursor()
+    cur.execute("DROP TABLE IF EXISTS schedule CASCADE;")
+    cur.execute("""CREATE TABLE schedule (
+ id SERIAL PRIMARY KEY,
+ maker_id INTEGER NOT NULL,
+ created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ req_date TEXT NOT NULL,
+ username TEXT NOT NULL, 
+ capacity INTEGER NOT NULL,
+ location TEXT NOT NULL,
+ req_time TEXT NOT NULL,
+ FOREIGN KEY (maker_id) REFERENCES maker (id),
+ FOREIGN KEY (username) REFERENCES maker (username)
+);""")
+    cur.execute("SELECT r.id,r.maker_id, r.created, r.req_date, r.req_time, r.location, r.priority, r.capacity, m.username FROM req r JOIN maker m ON r.maker_id = m.id ORDER BY r.priority DESC;")
+    reqs=cur.fetchall()
+    #Order to process queries by who has made the fewest requests
+    cur.execute("SELECT maker_id FROM (SELECT maker_id, count(id) as REQ_count from req group by maker_id ORDER BY req_count ASC) temp;")
+    execute_order=cur.fetchall()
+    print(execute_order)
+    while(len(reqs) !=0):
+        for ex_id in execute_order:
+            print(ex_id[0])
+            for req in reqs:
+                print(req[1])
+                if req[1] == ex_id[0]: 
+                    cur.execute("SELECT r.id,r.maker_id, r.created, r.req_date, r.req_time, r.location, r.capacity, m.username FROM schedule r JOIN maker m ON r.maker_id = m.id WHERE r.req_time = %s AND r.location=%s AND r.req_date = %s;", (req[4],req[5],req[3]))
+                    conflicts =cur.fetchall()
+                    print("conflicts exist!!\n")
+                    print(conflicts)
+                    if(len(conflicts)==0):
+                        print("insert"+str(req[8]))
+                        db.cursor().execute(
+                            "INSERT INTO schedule (req_date, capacity, location, req_time, maker_id,username)" "VALUES (%s, %s, %s, %s, %s,%s)",
+                            (req[3], req[7], req[5], req[4], req[1],req[8])
+                        )
+                        db.commit()
+                        break
+                    print("conflicts exist!!\n")
+                    print(conflicts)
+                    cur.execute("SELECT capacity from locations where name = '%s';" % (str(req[5])))
+                    capacity=cur.fetchall()
+                    print("capacity is")
+                    print(capacity)
+
+                    reqs.remove(req)
+
+
+    for req in reqs:
+        print(req)
+        print(type(reqs))
+
+        
+    
+    return 0

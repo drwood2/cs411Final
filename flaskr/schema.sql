@@ -30,12 +30,12 @@ CREATE TABLE schedule (
  maker_id INTEGER NOT NULL,
  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  req_date TEXT NOT NULL,
- firstName TEXT NOT NULL,
- lastName TEXT NOT NULL,
+ username TEXT NOT NULL, 
  capacity INTEGER NOT NULL,
  location TEXT NOT NULL,
  req_time TEXT NOT NULL,
- FOREIGN KEY (maker_id) REFERENCES maker (id)
+ FOREIGN KEY (maker_id) REFERENCES maker (id),
+ FOREIGN KEY (username) REFERENCES maker (username)
 );
 
 CREATE TABLE locations (
