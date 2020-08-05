@@ -130,26 +130,29 @@ def runScheduler():
             for req in reqs:
                 print(req[1])
                 if req[1] == ex_id[0]: 
-                    cur.execute("SELECT r.id,r.maker_id, r.created, r.req_date, r.req_time, r.location, r.capacity, m.username FROM schedule r JOIN maker m ON r.maker_id = m.id WHERE r.req_time = %s AND r.location=%s AND r.req_date = %s;", (req[4],req[5],req[3]))
+                    print("req is time:" +str(req[4]) + "at date:"+str(req[3]))
+                    print("check conflicct at: " + str(req[4])+ str(req[5])+ str(req[3]))
+                    cur.execute("SELECT r.id,r.maker_id, r.created, r.req_date, r.req_time, r.location, r.capacity FROM schedule r WHERE r.req_time = %s AND r.location=%s AND r.req_date = %s;", (req[4],req[5],req[3]))
                     conflicts =cur.fetchall()
                     print("conflicts exist!!\n")
                     print(conflicts)
+                    print("conflict len is: "+ str(len(conflicts)))
                     if(len(conflicts)==0):
-                        print("insert"+str(req[8]))
+                        print("SHOULD BE 0")
+                        print("conflict len is: "+ str(len(conflicts)))
+                        print("insert user:"+str(req[8])+"at time: " +str(req[4]))
                         db.cursor().execute(
                             "INSERT INTO schedule (req_date, capacity, location, req_time, maker_id,username)" "VALUES (%s, %s, %s, %s, %s,%s)",
                             (req[3], req[7], req[5], req[4], req[1],req[8])
                         )
                         db.commit()
+                        reqs.remove(req)
                         break
-                    print("conflicts exist!!\n")
-                    print(conflicts)
-                    cur.execute("SELECT capacity from locations where name = '%s';" % (str(req[5])))
-                    capacity=cur.fetchall()
-                    print("capacity is")
-                    print(capacity)
+                
+                    else:
+                        reqs.remove(req)
 
-                    reqs.remove(req)
+                    
 
 
     for req in reqs:
