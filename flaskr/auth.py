@@ -8,6 +8,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
@@ -15,25 +16,12 @@ from flaskr.db import get_db
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-
 def login_required(view):
     """View decorator that redirects anonymous users to the login page."""
 
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.maker is None:
-            return redirect(url_for("auth.login"))
-
-        return view(**kwargs)
-
-    return wrapped_view
-
-def admin_required(view):
-
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if not g.isAdmin:
-            print("admin access required")
             return redirect(url_for("auth.login"))
 
         return view(**kwargs)
@@ -57,7 +45,6 @@ def load_logged_in_user():
         )
 
 
-
 @bp.route("/register", methods=("GET", "POST"))
 def register():
     """Register a new user.
@@ -67,6 +54,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form["email"]
         if request.form.get("isAdmin"):
             isAdmin = True
         else:
@@ -76,15 +64,17 @@ def register():
         error = None
 
         if not username:
-            error = "Username is required."
-        elif not password:
-            error = "Password is required."
+            error = "please enter a username"
+        if not password:
+            error = "please enter a password"
+        if not email:
+            error = "please enter an email"
 
         if error is None:
             # the name is available, store it in the database and go to
             # the login page
             db.cursor().execute(
-                "INSERT INTO maker (username, password, isAdmin) VALUES (%s, %s, %s)", (username, generate_password_hash(password), isAdmin),
+                "INSERT INTO maker (username, password, email, isAdmin) VALUES (%s, %s, %s, %s)", (username, generate_password_hash(password), email, isAdmin),
             )
             db.commit()
             return redirect(url_for("auth.login"))
@@ -111,20 +101,25 @@ def login():
         maker = cur.fetchone()
         if maker is None:
             error = "Incorrect username."
+
+        if not check_password_hash(maker[2], password):
+            error = "Incorrect password."
+
         if admin_login:
             cur.execute(
                 "SELECT * FROM maker WHERE username = %s AND isAdmin = TRUE", (username,)
             )
             if cur.fetchone() is None:
                 error = "You do not have admin access."
-        if not check_password_hash(maker[2], password):
-            error = "Incorrect password."
 
         if error is None:
             # store the maker id in a new session and return to the index
             session.clear()
             session["maker_id"] = maker[0]
-            return redirect(url_for("admininputs.displayinfo"))
+            if admin_login:
+                return redirect(url_for("admin.home"))
+            else:
+                return redirect(url_for("user_req.index"))
 
         flash(error)
 
@@ -135,4 +130,4 @@ def login():
 def logout():
     """Clear the current session, including the stored maker id."""
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("user_req.index"))

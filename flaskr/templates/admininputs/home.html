@@ -1,0 +1,20 @@
+{% extends 'admin_base.html' %}
+
+<h1>{% block title %} home {% endblock %}</h1>
+
+{% block content %}
+  {% for req in reqs %}
+    <article class="req">
+      <header>
+      <div class="about"> <h1> {{ req[0] }} </h1>
+        hours: {{ req[1] }} - {{ req[2]}} 
+        <br><br>
+        capacity: {{ req[3] }} people
+      </div>
+      </header>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

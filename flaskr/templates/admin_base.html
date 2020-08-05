@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %} scheduler {% endblock %}</h1>
+  {% if g.maker %}
+     <a class="action" href="{{ url_for('admin.home') }}"> home </a>
+     <a class="action" href="{{ url_for('admin.add_locations') }}"> add a new location </a>
+     <a class="action" href="{{ url_for('admin.add_times') }}"> edit location availability </a>
+     <a class="action" href="{{ url_for('admin.schedule') }}"> create schedule </a>
+  {% endif %}
+{% endblock %}

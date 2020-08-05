@@ -1,0 +1,21 @@
+{%extends 'admin_base.html' %}
+
+  <h1>{% block title %} add a new location {% endblock %}</h1>
+
+{% block content %}
+  <form method="post">
+    <label for="location">location name</label>
+    <input name="location" id="location" value="{{ request.form['location'] }}" required>
+
+    <label for="capacity"> location capacity </label>
+    <input name="capacity" id="capacity" value="{{ request.form['capacity']}}" required>
+
+    <label for="opens_at"> opening time</label>
+    <input type="time" name="opens_at" id="opens_at" value="{{ request.form['opens_at'] }}" required>
+
+    <label for="closes_at"> closing time </label>
+    <input type="time" name="closes_at" id="closes_at" value="{{ request.form['closes_at'] }}" required>
+
+   <input type="submit" value="submit request">
+    </form>
+{% endblock %}

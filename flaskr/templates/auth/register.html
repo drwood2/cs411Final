@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}register{% endblock %}</h1>
+  <h1>{% block title %} register {% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
@@ -10,8 +10,12 @@
     <input name="username" id="username" required>
     <label for="password">password</label>
     <input type="password" name="password" id="password" required
-    <label for="admin"> I'm an admin</label>
-    <input type="checkbox" id="admin" name="isAdmin">
+    <label for="email"><b>email</b></label>
+    <input type="email" name="email" id="email" required
+    <div class="check">
+      <label for="admin"> i'm an admin  </label>
+      <input type="checkbox" id="admin" name="isAdmin">
+    </div>
     <input type="submit"  value="register">
   </form>
 {% endblock %}

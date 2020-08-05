@@ -1,0 +1,26 @@
+{% extends 'admin_base.html' %}
+
+
+<h1>{% block title %} edit location availability {% endblock %}</h1>
+
+
+{% block content %}
+    <form method="post">
+       <label for="location"> select location </label>
+       <input list="locs" name="location" id="location" value ="{{ request.form['location']}}" required>
+
+           <datalist id="locs">
+             {% for location in locations %}
+                <option value="{{ location.name }}">
+             {% endfor %}
+           </datalist>
+
+       <label for="opens_at">location opens at</label>
+       <input type="time" name="opens_at" id="opens_at" value="{{ request.form['opens_at'] }}" required>
+
+       <label for="closes_at">location closes at</label>
+       <input type="time" name="closes_at" id="closes_at" value="{{ request.form['closes_at'] }}" required>
+
+       <input type="submit" value="submit request">
+    </form>
+{% endblock %}

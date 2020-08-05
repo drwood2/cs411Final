@@ -1,29 +1,29 @@
-{% extends 'base.html' %}
+{%extends 'user_base.html' %}
 
-{% block header %}
-  <h1>{% block title %}user requests{% endblock %}</h1>
-  {% if g.maker %}
-    <a class="action" href="{{ url_for('user_req.index') }}"> home</a>
-    <a class="action" href="{{ url_for('user_req.create') }}"> make a new request</a>
-    <a class="action" href="{{ url_for('user_req.FinalSchedule') }}"> view final schedule</a>
-    <a class="action" href="{{ url_for('user_req.schedule') }}"> create the schedule</a>
-  {% endif %}
-{% endblock %}
+  <h1>{% block title %} home {% endblock %}  </h1>
+
 
 {% block content %}
   {% for req in reqs %}
     <article class="req">
       <header>
-      <div class="about"> <h1> someone </h1> made a priority {{ req[7] }} request
-      </div>
+
+      <div class="about">
         {% if g.maker[0] == req[1] %}
-          <a class="action" href="{{ url_for('user_req.update', id=req[0])}}">edit</a>
-       {% endif %}
+         <h3> you made a priority {{ req[7] }} request </h3>
+        {% endif %}
+        {% if g.maker[0] != req[1] %}
+         <h3> someone else made a priority {{ req[7] }} request </h3>
+        {% endif %}
+      </div>
       </header>
-      <p class="body">date: {{ req[3] }}</p>
-      <p class="body">time: {{ req[4] }}</p>
-      <p class="body">location: {{ req[5] }}</p>
-      <p class="body">people: {{ req[7] }} </p>
+      <b> {{ req[5] }} </b> has been requested for use on <b> {{ req[3] }} </b> at <b> {{ req[4] }} </b>
+      <br>
+      please check the final schedule to view the status of this request.
+      <br><br>
+      {% if g.maker[0] == req[1] %}
+        <a class="action" href="{{ url_for('user_req.update', id=req[0])}}">edit request</a>
+     {% endif %}
     </article>
     {% if not loop.last %}
       <hr>

@@ -49,7 +49,7 @@ def get_req (id, check_author=True):
     return req
 
 
-@bp.route("/create", methods=("GET", "POST"))
+@bp.route("/create/req", methods=("GET", "POST"))
 @login_required
 def create():
     if request.method == "POST":
@@ -73,35 +73,8 @@ def create():
             )
             db.commit()
             return redirect(url_for("user_req.index"))
-
-    return render_template("user_req/create.html")
-
-@bp.route("/schedule", methods=("GET", "POST"))
-@login_required
-def schedule():
-    if request.method == "POST":
-        error = None
-
-        if error is not None:
-            flash(error)
-        else:
-            if(runScheduler() == 0):
-                print("schedule works!")
-            return redirect(url_for("user_req.index"))
-
-    return render_template("user_req/schedule.html")
-
-
-
-@bp.route("/FinalSchedule", methods=("GET", "POST"))
-@login_required
-def FinalSchedule():
-    db = get_db()
-    cur = db.cursor()
-
-    cur.execute("SELECT r.id, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.priority, r.capacity, m.username FROM FinalSched r JOIN maker m ON r.maker_id = m.id ORDER BY created DESC;")
-
-    return render_template("user_req/FinalSchedule.html", reqs=cur.fetchall())
+    cur = get_rows("SELECT name, capacity FROM locations")
+    return render_template("user_req/create.html", locations = cur.fetchall())
 
 
 
@@ -144,3 +117,13 @@ def delete(id):
     db.cursor().execute("DELETE FROM req WHERE id = %s", (id,))
     db.commit()
     return redirect(url_for("user_req.index"))
+
+@bp.route("/schedule/final", methods=("GET", "POST"))
+@login_required
+def final_schedule():
+    db = get_db()
+    cur = db.cursor()
+
+    cur.execute("SELECT r.id, r.maker_id, r.created, r.req_date, r.req_time, r.location, r.priority, r.capacity, m.username FROM schedule r JOIN maker m ON r.maker_id = m.id ORDER BY created DESC;")
+
+    return render_template("user_req/final_schedule.html", reqs=cur.fetchall())
