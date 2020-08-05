@@ -20,11 +20,11 @@
         {% if g.maker[0] == req[1] %}
           <a class="action" href="{{ url_for('user_req.update', id=req[0])}}">edit</a>
        {% endif %}
-      </header>
-      <p class="body">date: {{ req[4] }}</p>
-      <p class="body">time: {{ req[5] }}</p>
-      <p class="body">location: {{ req[6] }}</p>
-      <p class="body">people: {{ req[7] }} </p>
+     </header>
+     <b> {{ req[5] }} </b> has been requested for use on <b> {{ req[3] }} </b> at <b> {{ req[4] }} </b>
+     <br>
+     please check the final schedule to view the status of this request.
+     <br><br>
     </article>
     {% if not loop.last %}
       <hr>
