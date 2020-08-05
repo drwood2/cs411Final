@@ -30,7 +30,7 @@ CREATE TABLE schedule (
  maker_id INTEGER NOT NULL,
  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  req_date TEXT NOT NULL,
- username TEXT NOT NULL, 
+ username TEXT NOT NULL,
  capacity INTEGER NOT NULL,
  location TEXT NOT NULL,
  req_time TEXT NOT NULL,

@@ -6,18 +6,24 @@
 {% block content %}
 <form method="post">
   <label for="req_date">date</label>
-  <input name="req_date" id="req_date" value="{{ request.form['req_date'] }}" required>
+  <input type="date" name="req_date" id="req_date" value="{{ request.form['req_date'] }}" required>
 
   <label for="req_time">time</label>
-  <input name="req_time" id="req_time" value="{{ request.form['req_time'] }}" required>
+  <input type="time" name="req_time" id="req_time" value="{{ request.form['req_time'] }}" required>
 
-  <label for="location">location</label>
-  <input name="location" id="location" value="{{ request.form['location'] }}" required>
+   <label for="location"> select location </label>
+   <input list="locs" name="location" id="location" value ="{{ request.form['location']}}" required>
+
+       <datalist id="locs">
+         {% for location in locations %}
+            <option value="{{ location.name }}">
+         {% endfor %}
+       </datalist>
 
   <label for="priority">priority</label>
-  <input name="priority" id="priority" value="{{ request.form['priority'] }}" required>
+  <input type="number" name="priority" id="priority" value="{{ request.form['priority'] }}" required>
 
-  <label for="capacity">capacity</label>
+  <label type="number" for="capacity">number of people</label>
   <input name="capacity" id="capacity" value="{{ request.form['capacity'] }}" required>
 
   <input type="submit" value="update request">
